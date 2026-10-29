@@ -1,9 +1,171 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <link rel="stylesheet"  />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Le Barbier – Réservation</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="#" class="logo">✂ Le Barbier</a>
+        <nav>
+          <a href="#services">Services</a>
+          <a href="#barbiers">Barbiers</a>
+          <a href="#reserver" class="btn btn-small">Réserver</a>
+        </nav>
+      </div>
+    </header>
 
+    <section class="hero">
+      <div class="container">
+        <h1>Votre coupe, à l'heure qui vous convient</h1>
+        <p>Réservez en ligne en moins d'une minute.</p>
+        <a href="#reserver" class="btn">Prendre rendez-vous</a>
+      </div>
+    </section>
+
+    <main class="container">
+      <form id="reserver" class="booking">
+        <!-- 1. Service -->
+        <section id="services" class="step">
+          <h2><span class="step-num">1</span> Choisissez un service</h2>
+          <div class="options">
+            <label class="card">
+              <input type="radio" name="service" value="Coupe homme" required />
+              <span class="card-title">Coupe homme</span>
+              <span class="card-meta">30 min · 25 €</span>
+            </label>
+            <label class="card">
+              <input type="radio" name="service" value="Taille de barbe" />
+              <span class="card-title">Taille de barbe</span>
+              <span class="card-meta">20 min · 15 €</span>
+            </label>
+            <label class="card">
+              <input type="radio" name="service" value="Coupe + barbe" />
+              <span class="card-title">Coupe + barbe</span>
+              <span class="card-meta">45 min · 35 €</span>
+            </label>
+            <label class="card">
+              <input type="radio" name="service" value="Coupe enfant" />
+              <span class="card-title">Coupe enfant</span>
+              <span class="card-meta">20 min · 15 €</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 2. Barbier -->
+        <section id="barbiers" class="step">
+          <h2><span class="step-num">2</span> Choisissez votre barbier</h2>
+          <div class="options">
+            <label class="card barber">
+              <input type="radio" name="barbier" value="Peu importe" checked />
+              <span class="avatar">?</span>
+              <span class="card-title">Peu importe</span>
+            </label>
+            <label class="card barber">
+              <input type="radio" name="barbier" value="Karim" />
+              <span class="avatar">K</span>
+              <span class="card-title">Karim</span>
+            </label>
+            <label class="card barber">
+              <input type="radio" name="barbier" value="Lucas" />
+              <span class="avatar">L</span>
+              <span class="card-title">Lucas</span>
+            </label>
+            <label class="card barber">
+              <input type="radio" name="barbier" value="Sofiane" />
+              <span class="avatar">S</span>
+              <span class="card-title">Sofiane</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 3. Date et heure -->
+        <section class="step">
+          <h2><span class="step-num">3</span> Date et heure</h2>
+          <label class="field">
+            Date
+            <input type="date" name="date" id="date" required />
+          </label>
+          <div class="slots">
+            <label><input type="radio" name="heure" value="09:00" required /><span>09:00</span></label>
+            <label><input type="radio" name="heure" value="09:30" /><span>09:30</span></label>
+            <label><input type="radio" name="heure" value="10:00" disabled /><span>10:00</span></label>
+            <label><input type="radio" name="heure" value="10:30" /><span>10:30</span></label>
+            <label><input type="radio" name="heure" value="11:00" /><span>11:00</span></label>
+            <label><input type="radio" name="heure" value="14:00" /><span>14:00</span></label>
+            <label><input type="radio" name="heure" value="14:30" disabled /><span>14:30</span></label>
+            <label><input type="radio" name="heure" value="15:00" /><span>15:00</span></label>
+            <label><input type="radio" name="heure" value="16:00" /><span>16:00</span></label>
+            <label><input type="radio" name="heure" value="17:30" /><span>17:30</span></label>
+          </div>
+        </section>
+
+        <!-- 4. Coordonnées -->
+        <section class="step">
+          <h2><span class="step-num">4</span> Vos coordonnées</h2>
+          <div class="fields">
+            <label class="field">
+              Nom
+              <input type="text" name="nom" autocomplete="name" required />
+            </label>
+            <label class="field">
+              Téléphone
+              <input type="tel" name="tel" autocomplete="tel" required />
+            </label>
+            <label class="field">
+              E-mail
+              <input type="email" name="email" autocomplete="email" />
+            </label>
+          </div>
+        </section>
+
+        <button type="submit" class="btn btn-block">Confirmer la réservation</button>
+      </form>
+
+      <section id="confirmation" class="confirmation" hidden>
+        <h2>Rendez-vous confirmé ✓</h2>
+        <p id="recap"></p>
+        <button type="button" class="btn" id="nouveau">Nouvelle réservation</button>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Le Barbier · 12 rue de la Paix, Paris · Mar–Sam 9h–19h</p>
+      </div>
+    </footer>
+
+    <script>
+      const form = document.getElementById("reserver");
+      const confirmation = document.getElementById("confirmation");
+      const date = document.getElementById("date");
+
+      date.min = new Date().toISOString().split("T")[0];
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const d = new FormData(form);
+        const jour = new Date(d.get("date")).toLocaleDateString("fr-FR", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+        });
+        document.getElementById("recap").textContent =
+          `${d.get("service")} avec ${d.get("barbier")}, le ${jour} à ${d.get("heure")}. ` +
+          `À bientôt, ${d.get("nom")} !`;
+        form.hidden = true;
+        confirmation.hidden = false;
+        confirmation.scrollIntoView({ behavior: "smooth" });
+      });
+
+      document.getElementById("nouveau").addEventListener("click", () => {
+        form.reset();
+        confirmation.hidden = true;
+        form.hidden = false;
+      });
+    </script>
+  </body>
+</html>
